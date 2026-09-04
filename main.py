@@ -80,6 +80,13 @@ def parse_args():
         help="Figure height per chromosome in inches (default: 3)."
     )
 
+    parser.add_argument(
+        "--max-clamp",
+        type=float,
+        default=None,
+        help="Clamp the maximum y-axis value to this number (optional)."
+    )
+
     return parser.parse_args()
 
 
@@ -173,7 +180,10 @@ def main():
         ax.plot(x, depth, linewidth=0.4)
         ax.set_ylabel(chrom)
         ax.set_xlim(0, len(depth) * args.binsize)
-        ax.set_ylim(bottom=-10)
+        if args.max_clamp is not None:
+            ax.set_ylim(bottom=-10, top=args.max_clamp)
+        else:
+            ax.set_ylim(bottom=-10)
         # Add a horizontal line through the x-axis (y=0)
         ax.axhline(y=0, color='gray', linestyle='--', linewidth=1, label='y=0')
 
