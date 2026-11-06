@@ -175,7 +175,7 @@ def compute_coverage(bam, fasta, chrom, start, end, binsize):
     cov = bam.count_coverage(
         contig=chrom,
         start=start,
-        end=end,
+        stop=end,
         quality_threshold=0,
     )
 
@@ -253,10 +253,7 @@ def main():
     # Compute and plot coverage per interval
     for ax, (chrom, start, end) in zip(axes, intervals):
         chrom_len = fasta.get_reference_length(chrom)
-        if start == 0 and end == chrom_len:
-            label = chrom
-        else:
-            label = f"{chrom}:{start + 1}-{end}"
+        label = chrom
 
         print(f"Computing coverage for {label}...", file=sys.stderr)
 
@@ -271,6 +268,7 @@ def main():
         ax.plot(x, depth, linewidth=0.4)
         ax.set_ylabel(label)
         ax.set_xlim(start, end)
+        ax.xaxis.set_major_locator(plt.MaxNLocator(nbins=20))
 
     axes[-1].set_xlabel("Genomic position (bp)")
 
