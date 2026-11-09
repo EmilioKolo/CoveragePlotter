@@ -269,6 +269,12 @@ def main():
         ax.set_ylabel(label)
         ax.set_xlim(start, end)
         ax.xaxis.set_major_locator(plt.MaxNLocator(nbins=20))
+        if args.max_clamp is not None:
+            ax.set_ylim(bottom=-10, top=args.max_clamp)
+        else:
+            ax.set_ylim(bottom=-10)
+        # Add a horizontal line through the x-axis (y=0)
+        ax.axhline(y=0, color='gray', linestyle='--', linewidth=1, label='y=0')
 
     axes[-1].set_xlabel("Genomic position (bp)")
 
